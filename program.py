@@ -19,7 +19,7 @@ async def search_command(interaction: discord.Interaction, query: str, page: int
 
 
 @client.tree.command(name="roll")
-async def roll_command(interaction: discord.Interaction, dice: str, modifier: int = 0):
+async def roll_command(interaction: discord.Interaction, dice: str):
     await roll(interaction, dice)
 
 client.run(client.discord_token)
