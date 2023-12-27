@@ -1,4 +1,4 @@
-Discord bot to query and handle webhooks from [Bored Gods Wiki](https://wiki.boredgods.no/) for a Dungeons and Dragons campaign Discord server.
+Discord bot for a Dungeons and Dragons campaign. It interacts with an API at [Bored Gods Wiki](https://wiki.boredgods.no/)
 
 Available Discord commands for users:
 - `/search Timou Grolsch`
