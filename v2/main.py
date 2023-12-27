@@ -1,9 +1,9 @@
 import discord
-from bookstackapi import BookStackAPI
+from bookstackapi import BookStackAPIClient
 import os
-from v2.user_commands import hello, books, search
+from user_commands import hello, books, search, roll
 
-client = BookStackAPI(intents=discord.Intents.default())
+client = BookStackAPIClient(intents=discord.Intents.default())
 baseurl = os.getenv("BASE_URL")
 
 
@@ -25,5 +25,10 @@ async def books_command(interaction: discord.Interaction):
 @client.tree.command(name="search")
 async def search_command(interaction: discord.Interaction, query: str, page: int = 1, count: int = 10):
     await search(interaction, baseurl, client.auth_header, query, page, count)
+
+
+@client.tree.command(name="roll")
+async def roll_command(interaction: discord.Interaction, dice: str, modifier: int = 0):
+    await roll(interaction, dice)
 
 client.run(client.discord_token)

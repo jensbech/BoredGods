@@ -1,7 +1,9 @@
+import random
 import discord
 import aiohttp
 from urllib.parse import urlencode
 from discord import Embed
+import json
 
 
 async def hello(interaction: discord.Interaction):
@@ -18,6 +20,67 @@ async def books(interaction: discord.Interaction, baseurl: str, auth_header: dic
             else:
                 print(f"Failed to retrieve data: {response.status}")
                 await interaction.response.send_message("Failed to retrieve books data.")
+
+
+async def roll(interaction: discord.Interaction, dice: str):
+    try:
+        dice = dice.lower().replace(' ', '')
+
+        with open("roll_messages.json", "r") as file:
+            quip_messages = json.load(file)
+
+        allowed_dice = {'d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'}
+
+        if 'd' not in dice or not any(d in dice for d in allowed_dice):
+            await interaction.response.send_message('Allowed dice are d4, d6, d8, d10, d12, d20, and d100.')
+            return
+
+        parts = dice.split('d')
+        num_rolls = int(parts[0]) if parts[0] else 1
+
+        modifier = 0
+        if '+' in parts[1]:
+            limit_and_modifier = parts[1].split('+')
+            limit = int(limit_and_modifier[0])
+            modifier = int(limit_and_modifier[1])
+        elif '-' in parts[1]:
+            limit_and_modifier = parts[1].split('-')
+            limit = int(limit_and_modifier[0])
+            modifier = -int(limit_and_modifier[1])
+        else:
+            limit = int(parts[1])
+
+        dice_type = f'd{limit}'
+        if dice_type not in allowed_dice:
+            await interaction.response.send_message(f'Invalid dice type! Allowed dice are {", ".join(allowed_dice)}.')
+            return
+
+        results = [random.randint(1, limit) for _ in range(num_rolls)]
+
+        result_lines = []
+        for result in results:
+            modified_result = result + modifier
+            if result == 20:
+                critical_message = "**Natural 20!! " + random.choice(
+                    quip_messages["success"]) + '\n' + "**"
+
+            elif result == 1:
+                critical_message = "**Natural 1. " + random.choice(
+                    quip_messages["failure"]) + '\n' + "**"
+            else:
+                critical_message = ''
+
+            result_lines.append(
+                f"{critical_message} {result} (+{modifier}) = {modified_result} ")
+
+        result_string = '\n'.join(result_lines)
+        await interaction.response.send_message(result_string)
+    except ValueError:
+        await interaction.response.send_message('Invalid format or numbers!')
+        return
+    except Exception as e:
+        await interaction.response.send_message(f'An unexpected error occurred: {e}')
+        return
 
 
 async def search(interaction: discord.Interaction, baseurl: str, auth_header: dict,
