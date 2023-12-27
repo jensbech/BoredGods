@@ -6,22 +6,6 @@ from discord import Embed
 import json
 
 
-async def hello(interaction: discord.Interaction):
-    """Says hello!"""
-    await interaction.response.send_message(f'Hi, {interaction.user.mention}')
-
-
-async def books(interaction: discord.Interaction, baseurl: str, auth_header: dict):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(baseurl + "/books", headers=auth_header) as response:
-            if response.status == 200:
-                data = await response.json()
-                await interaction.response.send_message(f"Books data: {data}")
-            else:
-                print(f"Failed to retrieve data: {response.status}")
-                await interaction.response.send_message("Failed to retrieve books data.")
-
-
 async def roll(interaction: discord.Interaction, dice: str):
     try:
         dice = dice.lower().replace(' ', '')
@@ -58,6 +42,8 @@ async def roll(interaction: discord.Interaction, dice: str):
         results = [random.randint(1, limit) for _ in range(num_rolls)]
 
         result_lines = []
+        embeds = []
+
         for result in results:
             modified_result = result + modifier
             if result == 20 and dice_type == 'd20':
@@ -70,11 +56,30 @@ async def roll(interaction: discord.Interaction, dice: str):
             else:
                 critical_message = ''
 
-            result_lines.append(
-                f"{critical_message} {result} (+{modifier}) = {modified_result} ")
+            if modifier == 0:
+                result_lines.append(
+                    f"{critical_message} {modified_result} "
+                )
+            else:
+                result_lines.append(
+                    f"{critical_message} {
+                        result} (+{modifier}) = {modified_result} "
+                )
+
+            if result == 20 and dice_type == 'd20':
+                spotifySongEmbed = discord.Embed(
+                    title="Nina Sublatti",
+                    description="Warrior",
+                    url="https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef",
+                    color=0x1DB954)
+
+                spotifySongEmbed.set_thumbnail(
+                    url="https://i1.sndcdn.com/artworks-000122405931-31a939-t500x500.jpg")
+                embeds.append(spotifySongEmbed)
 
         result_string = '\n'.join(result_lines)
-        await interaction.response.send_message(result_string)
+        await interaction.response.send_message(content=result_string, embeds=embeds)
+
     except ValueError:
         await interaction.response.send_message('Invalid format or numbers!')
         return

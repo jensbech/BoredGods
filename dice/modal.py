@@ -1,6 +1,6 @@
 import discord
 from discord.ui import Modal, TextInput
-from user_commands import roll
+from commands import roll
 
 
 class DiceRollModal(Modal):
