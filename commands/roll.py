@@ -5,81 +5,103 @@ import random
 
 async def roll(interaction: discord.Interaction, dice: str):
     try:
-        dice = dice.lower().replace(' ', '')
-
-        with open("resources/dice_critical_responses.json", "r") as file:
-            quip_messages = json.load(file)
-
-        allowed_dice = {'d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'}
-
-        if 'd' not in dice or not any(d in dice for d in allowed_dice):
+        dice = parse_dice_string(dice)
+        if not dice:
             await interaction.response.send_message('Allowed dice are d4, d6, d8, d10, d12, d20, and d100.')
             return
 
-        parts = dice.split('d')
-        num_rolls = int(parts[0]) if parts[0] else 1
+        num_rolls, limit, modifier = extract_roll_parameters(dice)
 
-        modifier = 0
-        if '+' in parts[1]:
-            limit_and_modifier = parts[1].split('+')
-            limit = int(limit_and_modifier[0])
-            modifier = int(limit_and_modifier[1])
-        elif '-' in parts[1]:
-            limit_and_modifier = parts[1].split('-')
-            limit = int(limit_and_modifier[0])
-            modifier = -int(limit_and_modifier[1])
-        else:
-            limit = int(parts[1])
+        results = roll_dice(num_rolls, limit)
 
-        dice_type = f'd{limit}'
-        if dice_type not in allowed_dice:
-            await interaction.response.send_message(f'Invalid dice type! Allowed dice are {", ".join(allowed_dice)}.')
-            return
-
-        results = [random.randint(1, limit) for _ in range(num_rolls)]
-
-        result_lines = []
-        embeds = []
-
-        for result in results:
-            modified_result = result + modifier
-            if result == 20 and dice_type == 'd20':
-                critical_message = "**Natural 20!! " + random.choice(
-                    quip_messages["success"]) + '\n' + "**"
-
-            elif result == 1 and dice_type == 'd20':
-                critical_message = "**Natural 1. " + random.choice(
-                    quip_messages["failure"]) + '\n' + "**"
-            else:
-                critical_message = ''
-
-            if modifier == 0:
-                result_lines.append(
-                    f"{critical_message} {modified_result} "
-                )
-            else:
-                result_lines.append(
-                    f"{critical_message} {
-                        result} (+{modifier}) = {modified_result} "
-                )
-
-            if result == 20 and dice_type == 'd20':
-                spotifySongEmbed = discord.Embed(
-                    title="Nina Sublatti",
-                    description="Warrior",
-                    url="https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef",
-                    color=0x1DB954)
-
-                spotifySongEmbed.set_thumbnail(
-                    url="https://i1.sndcdn.com/artworks-000122405931-31a939-t500x500.jpg")
-                embeds.append(spotifySongEmbed)
+        quip_messages = load_quip_messages()
+        result_lines, embeds = generate_results_and_embeds(
+            results, limit, modifier, quip_messages)
 
         result_string = '\n'.join(result_lines)
         await interaction.response.send_message(content=result_string, embeds=embeds)
 
     except ValueError:
         await interaction.response.send_message('Invalid format or numbers!')
-        return
     except Exception as e:
         await interaction.response.send_message(f'An unexpected error occurred: {e}')
-        return
+
+
+def parse_dice_string(dice_str):
+    allowed_dice = {'d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'}
+    dice_str = dice_str.lower().replace(' ', '')
+    if 'd' not in dice_str or not any(d in dice_str for d in allowed_dice):
+        return None
+    return dice_str
+
+
+def extract_roll_parameters(dice_str):
+    parts = dice_str.split('d')
+    num_rolls = int(parts[0]) if parts[0] else 1
+    limit, modifier = parse_limit_and_modifier(parts[1])
+    return num_rolls, limit, modifier
+
+
+def parse_limit_and_modifier(part):
+    if '+' in part:
+        limit, modifier = map(int, part.split('+'))
+    elif '-' in part:
+        limit, modifier = part.split('-')
+        limit = int(limit)
+        modifier = -int(modifier)
+    else:
+        limit = int(part)
+        modifier = 0
+    return limit, modifier
+
+
+def roll_dice(num_rolls, limit):
+    return [random.randint(1, limit) for _ in range(num_rolls)]
+
+
+def load_quip_messages():
+    with open("resources/dice_critical_responses.json", "r") as file:
+        return json.load(file)
+
+
+def generate_results_and_embeds(results, limit, modifier, quip_messages):
+    result_lines = []
+    embeds = []
+    for result in results:
+        critical_message = get_critical_message(result, limit, quip_messages)
+        modified_result = result + modifier
+        result_line = generate_result_line(
+            result, modifier, modified_result, critical_message)
+        result_lines.append(result_line)
+        if result == 20 and limit == 20:
+            embeds.append(create_natural_20_embed())
+    return result_lines, embeds
+
+
+def get_critical_message(result, limit, quip_messages):
+    if result == 20 and limit == 20:
+        return f"**Natural 20!! {random.choice(quip_messages['success'])}\n**"
+    elif result == 1 and limit == 20:
+        return f"**Natural 1. {random.choice(quip_messages['failure'])}\n**"
+    return ''
+
+
+def generate_result_line(result, modifier, modified_result, critical_message):
+    sign = "-" if modifier < 0 else "+"
+    if modifier == 0:
+        return f"{critical_message}{modified_result}"
+    else:
+        return f"{critical_message}{result} ({sign}{abs(modifier)}) = {modified_result}"
+
+
+def create_natural_20_embed():
+    spotifySongEmbed = discord.Embed(
+        title="Nina Sublatti",
+        description="Warrior",
+        url="https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef",
+        color=0x1DB954
+    )
+    spotifySongEmbed.set_thumbnail(
+        url="https://i1.sndcdn.com/artworks-000122405931-31a939-t500x500.jpg"
+    )
+    return spotifySongEmbed
