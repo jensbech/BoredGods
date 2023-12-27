@@ -95,13 +95,13 @@ def generate_result_line(result, modifier, modified_result, critical_message):
 
 
 def create_natural_20_embed():
-    spotifySongEmbed = discord.Embed(
+    thumb = discord.Embed(
         title="Nina Sublatti",
         description="Warrior",
         url="https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef",
         color=0x1DB954
     )
-    spotifySongEmbed.set_thumbnail(
-        url="https://i1.sndcdn.com/artworks-000122405931-31a939-t500x500.jpg"
+    thumb.set_thumbnail(
+        url="https://wiki.boredgods.no/uploads/images/gallery/2023-12/thumbs-150-150/spotify-icon-svg.png"
     )
-    return spotifySongEmbed
+    return thumb
