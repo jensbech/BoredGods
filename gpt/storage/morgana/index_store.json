@@ -1,0 +1,1 @@
+{"index_store/data": {"morgana": {"__type__": "vector_store", "__data__": "{\"index_id\": \"morgana\", \"summary\": null, \"nodes_dict\": {\"c3446074-41f4-4662-8c8d-61a72399d88d\": \"c3446074-41f4-4662-8c8d-61a72399d88d\"}, \"doc_id_dict\": {}, \"embeddings_dict\": {}}"}}}

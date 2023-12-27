@@ -1,0 +1,1 @@
+{"index_store/data": {"peopleofkazar": {"__type__": "vector_store", "__data__": "{\"index_id\": \"peopleofkazar\", \"summary\": null, \"nodes_dict\": {\"5d9d5b0c-01e9-4861-9ebf-cd3d446a12f5\": \"5d9d5b0c-01e9-4861-9ebf-cd3d446a12f5\", \"ba58e92f-5aa9-4481-bd8b-d9dcf4dfb44a\": \"ba58e92f-5aa9-4481-bd8b-d9dcf4dfb44a\"}, \"doc_id_dict\": {}, \"embeddings_dict\": {}}"}}}

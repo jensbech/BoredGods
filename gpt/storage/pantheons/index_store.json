@@ -1,0 +1,1 @@
+{"index_store/data": {"pantheons": {"__type__": "vector_store", "__data__": "{\"index_id\": \"pantheons\", \"summary\": null, \"nodes_dict\": {\"5cd603ef-224b-4249-b18d-c74fbb825204\": \"5cd603ef-224b-4249-b18d-c74fbb825204\"}, \"doc_id_dict\": {}, \"embeddings_dict\": {}}"}}}

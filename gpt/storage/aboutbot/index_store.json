@@ -1,0 +1,1 @@
+{"index_store/data": {"aboutbot": {"__type__": "vector_store", "__data__": "{\"index_id\": \"aboutbot\", \"summary\": null, \"nodes_dict\": {\"77d9a335-6e3d-44a8-9e63-cddc2cb51b6b\": \"77d9a335-6e3d-44a8-9e63-cddc2cb51b6b\", \"2299701e-fea9-4aba-882f-0c332c2c9a86\": \"2299701e-fea9-4aba-882f-0c332c2c9a86\"}, \"doc_id_dict\": {}, \"embeddings_dict\": {}}"}}}

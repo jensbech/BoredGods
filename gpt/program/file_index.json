@@ -1,0 +1,188 @@
+{
+  "trifecta": {
+    "description": "Trifecta Line Company, train stations"
+  },
+  "aboutbot": {
+    "description": "yourself, the bot, your name, where you are, who you are, what you can do, what your name is - any question that is about the bot itself. Or if someone just says 'hello there', or 'hello' or similar."
+  },
+  "unrelated": {
+    "description": "anything that has to do with the real world"
+  },
+  "aburaguzgul": {
+    "description": "Aburaguzgul"
+  },
+  "christian": {
+    "description": "Christian Baal"
+  },
+  "darryl": {
+    "description": "Darryl Cede"
+  },
+  "glory": {
+    "description": "Glory"
+  },
+  "sasha": {
+    "description": "Sasha Yarna"
+  },
+  "spike": {
+    "description": "Spike"
+  },
+  "thaddeus": {
+    "description": "Thaddeus Tinfoyle"
+  },
+  "timian": {
+    "description": "Timian Pestle"
+  },
+  "timou": {
+    "description": "Timou Grolsch"
+  },
+  "zagog": {
+    "description": "Zagog"
+  },
+  "nations": {
+    "description": "Other nations: Chytyr, Fuhdain, Vergenwell"
+  },
+  "dyavol": {
+    "description": "Dyavol, secret police"
+  },
+  "exp1": {
+    "description": "Expedition / Chronicle 1, titled 'Vale of Blossoms'"
+  },
+  "exp2": {
+    "description": "Expedition / Chronicle 2, titled 'North-East Castle'"
+  },
+  "exp3": {
+    "description": "Expedition / Chronicle 3, titled 'The Wilderness'"
+  },
+  "exp4": {
+    "description": "Expedition / Chronicle 4, titled 'Return to the Valley of Flowers'"
+  },
+  "exp5": {
+    "description": "Expedition / Chronicle 5, titled 'Puff is stupid'"
+  },
+  "exp6": {
+    "description": "Expedition / Chronicle 6, titled 'Carpet is OK'"
+  },
+  "exp7": {
+    "description": "Expedition / Chronicle 7, titled 'Red Moon, Blue Stone'"
+  },
+  "exp8": {
+    "description": "Expedition / Chronicle 8, titled 'Troll Bridge'"
+  },
+  "exp9": {
+    "description": "Expedition / Chronicle 9, titled 'Return to the Sunken Castle'"
+  },
+  "exp10": {
+    "description": "Expedition / Chronicle 10, titled 'Once again back to the sunken castle'"
+  },
+  "exp11": {
+    "description": "Expedition / Chronicle 11, titled 'Industrial Lamentations'"
+  },
+  "exp12": {
+    "description": "Expedition / Chronicle 12, titled 'Batzarca!'"
+  },
+  "exp13": {
+    "description": "Expedition / Chronicle 13, titled 'First encounter with Black Marrow'"
+  },
+  "exp14": {
+    "description": "Expedition / Chronicle 14, titled 'An audience with the wizard'"
+  },
+  "exp15": {
+    "description": "Expedition / Chronicle 15, titled 'Sinkborg/Castle sinks up and sinkborg sinks down again'"
+  },
+  "exp16": {
+    "description": "Expedition / Chronicle 16, titled 'An outbreak in Bucklehill'"
+  },
+  "settingprimer": {
+    "description": "Setting primer: Calendar, playable races, playable classes, magic, cosmetics, experience points, and rule exclusions"
+  },
+  "lineworker": {
+    "description": "Line worker playable background"
+  },
+  "inventor": {
+    "description": "Inventor playable background"
+  },
+  "treesinger": {
+    "description": "Treesinger playable background"
+  },
+  "industrychild": {
+    "description": "Industry child playable background"
+  },
+  "pantheons": {
+    "description": "Pantheons, gods and moral alignments"
+  },
+  "zilazan": {
+    "description": "Zilazan university"
+  },
+  "sites": {
+    "description": "Sites of interest where players can go on expeditions to"
+  },
+  "xp": {
+    "description": "Experience points"
+  },
+  "rex": {
+    "description": "Faction: Rex Saniem"
+  },
+  "languages": {
+    "description": "Languages, such as Elvish Orcish and Common"
+  },
+  "life": {
+    "description": "Stone upon hill, about expeditions, gameplay, decontamination, downtime, leveling, crafting, death, discord, the bazaar, the chroniclers tower, the station house, the northern drawbridge, the central plaza."
+  },
+  "otherplaces": {
+    "description": "Arc-upon High, Gulf of Kazar, Soskni, Groves of Yonder, Belching Wastes, Stormfyord"
+  },
+  "northbound": {
+    "description": "Faction: Northbound Guard"
+  },
+  "officerofline": {
+    "description": "Faction: Officers of the Line"
+  },
+  "politicsandlaw": {
+    "description": "Politics and law: Intellectual thought, peacekeeping, magic"
+  },
+  "magi": {
+    "description": "Faction: Trifectan Magi, and Tamburn School of Sophisticated Elven Magi"
+  },
+  "rivergold": {
+    "description": "Faction: River of Gold"
+  },
+  "peopleofkazar": {
+    "description": "Peoples of Kazar, and their races: Humans, halflings, tieflings, dwarves, half-orcs, wood elves, high-elves, gnomes, dragonborn, "
+  },
+  "calendar": {
+    "description": "Calendar and time keeping"
+  },
+  "efrael": {
+    "description": "Leader: King Efrael"
+  },
+  "bourgoul": {
+    "description": "Leader: Bourgoul the Wide"
+  },
+  "morgana": {
+    "description": "Leader: Morgana de Floc"
+  },
+  "calder": {
+    "description": "Leader/Prince: Calder"
+  },
+  "garold": {
+    "description": "Garold Lawson"
+  },
+  "puff": {
+    "description": "Puff"
+  },
+  "_othernpcs": {
+    "description": "The Blossom Queen, Quen Carellon, Motep, High priest Qaleq, Vondur Hrakk, Dimra Hrakk, King Hrakk, Yurret, Vic, Gregan Stevey, Delight, Trixie Lawanana, Red Wolf"
+  },
+  "rondo": {
+    "description": "Rondo"
+  },
+  "steamsingers": {
+    "description": "Steam singers"
+  },
+  "_otherfactions": {
+    "description": "The Kin Court, Keepers of the Arc, The Northbound Armed Engineering School, The Trifectian Naval Forces"
+  },
+  "clues": {
+    "description": "Clues, and what the players have learned so far"
+  }
+}
