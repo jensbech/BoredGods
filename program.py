@@ -1,7 +1,8 @@
 import discord
-from bookstackapi import BookStackAPIClient
+from bookstack.apiclient import BookStackAPIClient
 import os
-from user_commands import hello, books, search, roll
+from commands.roll import roll
+from commands.search import search
 
 client = BookStackAPIClient(intents=discord.Intents.default())
 baseurl = os.getenv("BASE_URL")
@@ -10,16 +11,6 @@ baseurl = os.getenv("BASE_URL")
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user} (ID: {client.user.id})')
-
-
-@client.tree.command(name="hello")
-async def hello_command(interaction: discord.Interaction):
-    await hello(interaction)
-
-
-@client.tree.command(name="books")
-async def books_command(interaction: discord.Interaction):
-    await books(interaction, baseurl, client.auth_header)
 
 
 @client.tree.command(name="search")
