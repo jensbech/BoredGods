@@ -1,5 +1,3 @@
-from discord.ext import commands
-from typing import Optional
 import discord
 from bookstack.apiclient import BookStackAPIClient
 import os
@@ -9,50 +7,40 @@ import aiohttp
 client = BookStackAPIClient(intents=discord.Intents.default())
 baseurl = os.getenv("BASE_URL")
 
+valid_categories = ["ability-scores", "alignments", "backgrounds", "classes", "conditions",
+                    "damage-types", "equipment", "equipment-categories", "feats", "features",
+                    "languages", "magic-items", "magic-schools", "monsters", "proficiencies",
+                    "races", "rule-sections", "rules", "skills", "subclasses", "subraces",
+                    "traits", "weapon-properties", "weapspons", "spells"]
+
 
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user} (ID: {client.user.id})')
 
 
-@client.tree.command(name="search")
+@client.tree.command(name="søk")
 async def search_command(interaction: discord.Interaction, query: str, page: int = 1, count: int = 10):
     await search(interaction, baseurl, client.auth_header, query, page, count)
 
 
-@client.tree.command(name="roll")
+@client.tree.command(name="terning")
 async def roll_command(interaction: discord.Interaction, dice: str):
     await roll(interaction, dice)
 
 
-CATEGORIES = ["spells", "weapons"]  # Add more item types as needed
+@client.tree.command(name="regler")
+async def lookup_command(interaction: discord.Interaction, kategori: str, navn: str):
 
-
-@client.tree.command(name="rules")
-async def lookup_command(
-    interaction: discord.Interaction,
-    spells: Optional[str] = None,
-    weapons: Optional[str] = None,
-    monsters: Optional[str] = None,
-    equipment: Optional[str] = None,
-    classes: Optional[str] = None
-):
-    query_param = [spells, weapons, monsters, equipment, classes]
-
-    if spells not in CATEGORIES:
-        error_message = f"Invalid item type. Please use from {
-            ', '.join(CATEGORIES)}."
+    if kategori not in valid_categories:
+        error_message = f"Ukjent kategori. Bruk en av de følgende: **{
+            ', '.join(valid_categories)}**."
         await interaction.response.send_message(error_message)
         return
 
-    if not spells:
-        error_message = "Please provide the name of the item you want to look up."
-        await interaction.response.send_message(error_message)
-        return
+    resolvedName = navn.replace(" ", "-").lower()
 
-    print("user sent item: ", spells)
-
-    url = f"https://www.dnd5eapi.co/api/{item}/{item.value}"
+    url = f"https://www.dnd5eapi.co/api/{kategori}/{resolvedName}"
 
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
@@ -60,8 +48,25 @@ async def lookup_command(
                 data = await response.json()
                 await interaction.response.send_message(str(data))
             else:
-                error_message = "Item not found or an error occurred. Please check the item name and try again."
+                error_message = "Regel ikke funnet, eller en feil. Sjekk navnet og prøv igjen!"
                 await interaction.response.send_message(error_message)
 
-# Run the bot with the Discord token
+
+@client.tree.command(name="hjelp")
+async def help_command(interaction: discord.Interaction):
+    category_list = ", ".join(
+        [f"`{category}`" for category in valid_categories])
+
+    messages = [
+        "Følgende kommandoer er tilgjengelige:",
+        "`/søk soskni` - Søk i Wiki",
+        "`/rull d20`- Rull to win",
+        "`/regler`",
+        "\nTilgjengelige kategorier for `/regler <kategori> <navn>`:",
+        category_list
+    ]
+
+    help_message = "\n".join(messages)
+    await interaction.response.send_message(help_message)
+
 client.run(os.getenv("DISCORD_TOKEN"))
