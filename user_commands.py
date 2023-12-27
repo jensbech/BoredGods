@@ -60,11 +60,11 @@ async def roll(interaction: discord.Interaction, dice: str):
         result_lines = []
         for result in results:
             modified_result = result + modifier
-            if result == 20:
+            if result == 20 and dice_type == 'd20':
                 critical_message = "**Natural 20!! " + random.choice(
                     quip_messages["success"]) + '\n' + "**"
 
-            elif result == 1:
+            elif result == 1 and dice_type == 'd20':
                 critical_message = "**Natural 1. " + random.choice(
                     quip_messages["failure"]) + '\n' + "**"
             else:
