@@ -23,7 +23,6 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
                 data = await response.json()
 
                 if data['total'] > 0:
-                    print(data)
                     embeds = []
                     for result in data['data']:
                         preview_content = result['preview_html']['content']
