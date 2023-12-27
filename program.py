@@ -7,11 +7,11 @@ import aiohttp
 client = BookStackAPIClient(intents=discord.Intents.default())
 baseurl = os.getenv("BASE_URL")
 
-valid_categories = ["ability-scores", "alignments", "backgrounds", "classes", "conditions",
-                    "damage-types", "equipment", "equipment-categories", "feats", "features",
+valid_categories = ["classes", "conditions",
+                    "equipment", "feats",
                     "languages", "magic-items", "magic-schools", "monsters", "proficiencies",
-                    "races", "rule-sections", "rules", "skills", "subclasses", "subraces",
-                    "traits", "weapon-properties", "weapspons", "spells"]
+                    "races", "skills",
+                    "weapons", "spells"]
 
 
 @client.event
@@ -46,7 +46,16 @@ async def lookup_command(interaction: discord.Interaction, kategori: str, navn: 
         async with session.get(url) as response:
             if response.status == 200:
                 data = await response.json()
-                await interaction.response.send_message(str(data))
+
+                print(data)
+
+                name = data['name']
+                desc = data['desc'][0]
+
+                message = f"\n**Name:** {name}\n"
+                message += f"**Description:** {desc}"
+
+                await interaction.response.send_message(message)
             else:
                 error_message = "Regel ikke funnet, eller en feil. Sjekk navnet og prøv igjen!"
                 await interaction.response.send_message(error_message)
