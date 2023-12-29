@@ -2,7 +2,6 @@ from flask import Flask, request
 import json
 import asyncio
 import os
-import random
 
 
 def create_app(discord_client):
@@ -24,18 +23,13 @@ def create_app(discord_client):
         return 'Webhook received', 200
 
     def handle_page_create(data):
-        with open('resources/new_post_messages.json', 'r') as file:
-            new_post_messages = json.load(file)
-
         page_url = data.get('url')
         triggered_by = data['triggered_by']['name']
 
-        random_message = random.choice(new_post_messages)
-
-        discord_message = random_message.format(
-            triggered_by=triggered_by, page_url=page_url)
+        discord_message = f"{triggered_by} har publisert en ny side i Wikien!\n{page_url}"
 
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
+
         channel = client.get_channel(channel_id)
 
         if channel:
@@ -46,4 +40,4 @@ def create_app(discord_client):
         else:
             print(f"Could not find the Discord channel with ID: {channel_id}")
 
-        return app
+    return app
