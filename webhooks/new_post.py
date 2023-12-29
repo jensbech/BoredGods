@@ -40,4 +40,4 @@ def create_app(discord_client):
         else:
             print(f"Could not find the Discord channel with ID: {channel_id}")
 
-        return app
+    return app
