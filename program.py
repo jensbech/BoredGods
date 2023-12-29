@@ -5,46 +5,47 @@ import os
 from commands.roll import roll
 from commands.search import search
 from commands.weather import weather
-from webhooks.new_post import run_flask
+from webhooks.new_post import create_app
+from commands.help import help
 import threading
 
-client = BookStackAPIClient(intents=discord.Intents.default())
+discord_client = BookStackAPIClient(intents=discord.Intents.default())
 baseurl = os.getenv("BASE_URL")
 
 
-@client.event
+@discord_client.event
 async def on_ready():
-    print(f'Logged in as {client.user} (ID: {client.user.id})')
+    print(f'Logged in as {discord_client.user} (ID: {discord_client.user.id})')
 
 
-@client.tree.command(name="søk")
+@discord_client.tree.command(name="søk")
 async def search_command(interaction: discord.Interaction, query: str, page: int = 1, count: int = 10):
-    await search(interaction, baseurl, client.auth_header, query, page, count)
+    await search(interaction, baseurl, discord_client.auth_header, query, page, count)
 
 
-@client.tree.command(name="terning")
+@discord_client.tree.command(name="terning")
 async def roll_command(interaction: discord.Interaction, dice: str):
     await roll(interaction, dice)
 
 
-@client.tree.command(name="værmelding")
+@discord_client.tree.command(name="værmelding")
 async def weather_command(interaction: discord.Interaction):
     await weather(interaction)
 
 
-@client.tree.command(name="hjelp")
+@discord_client.tree.command(name="hjelp")
 async def help_command(interaction: discord.Interaction):
-    messages = [
-        "Følgende kommandoer er tilgjengelige:",
-        "`/søk <query>` - Søk i Wiki",
-        "`/terning <dice>` - Rull terning",
-        "`/værmelding` - Sjekk været i Stone-upon-hill",
-    ]
-    help_message = "\n".join(messages)
-    await interaction.response.send_message(help_message)
+    await help(interaction)
 
-flask_thread = threading.Thread(target=run_flask)
-flask_thread.daemon = True
-flask_thread.start()
 
-client.run(os.getenv("DISCORD_TOKEN"))
+def run_flask_app():
+    flask_app = create_app(discord_client)
+    flask_app.run(host='0.0.0.0', port=5000)
+
+
+if __name__ == '__main__':
+    flask_thread = threading.Thread(target=run_flask_app)
+    flask_thread.daemon = True
+    flask_thread.start()
+
+    discord_client.run(os.getenv("DISCORD_TOKEN"))
