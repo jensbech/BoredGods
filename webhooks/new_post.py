@@ -2,7 +2,6 @@ from flask import Flask, request
 import json
 import asyncio
 import os
-import random
 
 
 def create_app(discord_client):
@@ -27,16 +26,10 @@ def create_app(discord_client):
         page_url = data.get('url')
         triggered_by = data['triggered_by']['name']
 
-        with open('resources/new_post_messages.json', 'r', encoding='utf-8') as f:
-            messages = json.load(f)["pageCreateMessages"]
-
-        discord_message_template = random.choice(messages)["message"]
-        discord_message = discord_message_template.format(
-            triggered_by=triggered_by, page_url=page_url)
+        discord_message = f"Vår venn {triggered_by} has publisert en ny side på Bored Gods Wiki!\n{page_url}"
 
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 
-        # Få tak i Discord-kanalen
         channel = client.get_channel(channel_id)
 
         if channel:
@@ -47,4 +40,4 @@ def create_app(discord_client):
         else:
             print(f"Could not find the Discord channel with ID: {channel_id}")
 
-        return app
+    return app
