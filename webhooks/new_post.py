@@ -26,7 +26,7 @@ def create_app(discord_client):
         page_url = data.get('url')
         triggered_by = data['triggered_by']['name']
 
-        discord_message = f"{triggered_by} har publisert en ny side i Wikien!\n{page_url}"
+        discord_message = f"{triggered_by} publiserte akkurat en ny side i Wikien!\n{page_url}"
 
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 
