@@ -95,6 +95,7 @@ def generate_result_line(result, modifier, modified_result, critical_message):
 
 
 def create_natural_20_embed():
+    # Todo: Change with just the link for all players
     thumb = discord.Embed(
         title="Nina Sublatti",
         description="Warrior",
