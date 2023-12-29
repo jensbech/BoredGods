@@ -2,6 +2,7 @@ from flask import Flask, request
 import json
 import asyncio
 import os
+import random
 
 
 def create_app(discord_client):
@@ -23,20 +24,21 @@ def create_app(discord_client):
         return 'Webhook received', 200
 
     def handle_page_create(data):
-        page_info = data.get('related_item', {})
-        page_name = page_info.get('name')
         page_url = data.get('url')
         triggered_by = data['triggered_by']['name']
 
-        discord_message = f"A new Wiki page **{page_name}** was just created by {triggered_by}\n{page_url}"
+        with open('resources/new_post_messages.json', 'r', encoding='utf-8') as f:
+            messages = json.load(f)["pageCreateMessages"]
 
-        # Assuming you have the channel ID as an environment variable
+        discord_message_template = random.choice(messages)["message"]
+        discord_message = discord_message_template.format(
+            triggered_by=triggered_by, page_url=page_url)
+
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 
-        # Get the Discord channel object
+        # Få tak i Discord-kanalen
         channel = client.get_channel(channel_id)
 
-        # If the channel was found, send the message
         if channel:
             asyncio.run_coroutine_threadsafe(
                 channel.send(discord_message),
@@ -45,4 +47,4 @@ def create_app(discord_client):
         else:
             print(f"Could not find the Discord channel with ID: {channel_id}")
 
-    return app
+        return app
