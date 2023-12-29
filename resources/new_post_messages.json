@@ -1,5 +1,4 @@
-{
-    "pageCreateMessages": [
+    [ 
         {
             "message": "En ny side er født i det uendelige tomrommet av Bored Gods Wiki! {triggered_by} har vevd sammen ord som kan skjule mer enn de avslører.\n{page_url}"
         },
@@ -37,4 +36,3 @@
             "message": "Det sies at hver ny side på wiki vår bærer med seg en forbannelse og en velsignelse. Takk til {triggered_by} for å ta sjansen på å avdekke en av dem.\n{page_url}"
         }
     ]
-}
