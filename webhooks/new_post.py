@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/webhooks/new_post', methods=['POST'])
 def webhook():
     data = request.json
-    print(json(data, indent=4))
+    print(json.dumps(data, indent=4))
 
     if data['event'] == 'page_create':
         handle_page_create(data)
@@ -24,6 +24,10 @@ def handle_page_create(data):
     triggered_by = data['triggered_by']['name']
 
     print(f"New page created: {page_name}, by {triggered_by}, URL: {page_url}")
+
+
+def run_flask():
+    app.run(host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':
