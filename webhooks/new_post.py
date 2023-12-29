@@ -31,7 +31,7 @@ def create_app(discord_client):
         discord_message = f"A new Wiki page **{page_name}** was just created by {triggered_by}\n{page_url}"
 
         # Assuming you have the channel ID as an environment variable
-        channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
+        channel_id = int(os.getenv(os.getenv("DISCORD_CHANNEL_ID")))
 
         # Get the Discord channel object
         channel = client.get_channel(channel_id)
