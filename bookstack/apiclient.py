@@ -13,9 +13,8 @@ class BookStackAPIClient(discord.Client):
         self.tree = app_commands.CommandTree(self)
         self.api_id = os.getenv('BOOKSTACK_API_ID')
         self.api_key = os.getenv('BOOKSTACK_API_KEY')
-        self.auth_header = {'Authorization': f'Token {
-            self.api_id}:{self.api_key}'
-        }
+        self.auth_header = {
+            'Authorization': f'Token { self.api_id}:{ self.api_key}'}
         self.discord_token = os.getenv('DISCORD_TOKEN')
 
     async def setup_hook(self):
