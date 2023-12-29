@@ -7,6 +7,7 @@ app = Flask(__name__)
 @app.route('/webhooks/new_post', methods=['POST'])
 def webhook():
     data = request.json
+    print(data)
     print(json.dumps(data, indent=4))
 
     if data['event'] == 'page_create':
