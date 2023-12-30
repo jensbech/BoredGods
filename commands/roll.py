@@ -77,7 +77,7 @@ def generate_results(results, limit, modifier, quip_messages, user_name):
         result_lines.append(result_line)
 
         if result == 20 and limit == 20:
-            result_lines.append(set_critical_song(user_name))
+            result_lines.append(get_critical_song(user_name))
     return result_lines
 
 
@@ -97,11 +97,10 @@ def generate_result_line(result, modifier, modified_result, critical_message):
         return f"{critical_message}{result} ({sign}{abs(modifier)}) = {modified_result}"
 
 
-def set_critical_song(user_name):
+def get_critical_song(user_name):
     with open("resources/critical_songs.json", "r") as file:
         song_dict = json.load(file)
 
-    default_song_link = "https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef"
-    song_link = song_dict.get(user_name, default_song_link)
-
-    return song_link
+    fallback_song = "7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef"
+    return "https://open.spotify.com/track/" + \
+        song_dict.get(user_name, fallback_song)
