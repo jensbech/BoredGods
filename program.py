@@ -40,8 +40,8 @@ async def help_command(interaction: discord.Interaction):
 
 
 @discord_client.tree.command(name="chat")
-async def chat_command(interaction: discord.Interaction):
-    await chat(interaction)
+async def chat_command(interaction: discord.Interaction, question: str):
+    await chat(interaction, question)
 
 
 def run_flask_app():
