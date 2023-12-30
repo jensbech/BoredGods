@@ -5,8 +5,9 @@ import os
 from commands.roll import roll
 from commands.search import search
 from commands.weather import weather
-from webhooks.new_post import create_app
 from commands.help import help
+from commands.chat import chat
+from webhooks.new_post import create_app
 import threading
 
 discord_client = BookStackAPIClient(intents=discord.Intents.default())
@@ -18,24 +19,29 @@ async def on_ready():
     print(f'Logged in as {discord_client.user} (ID: {discord_client.user.id})')
 
 
-@discord_client.tree.command(name="søk")
+@discord_client.tree.command(name="search")
 async def search_command(interaction: discord.Interaction, query: str, page: int = 1, count: int = 10):
     await search(interaction, baseurl, discord_client.auth_header, query, page, count)
 
 
-@discord_client.tree.command(name="terning")
+@discord_client.tree.command(name="roll")
 async def roll_command(interaction: discord.Interaction, dice: str):
     await roll(interaction, dice)
 
 
-@discord_client.tree.command(name="værmelding")
+@discord_client.tree.command(name="weather")
 async def weather_command(interaction: discord.Interaction):
     await weather(interaction)
 
 
-@discord_client.tree.command(name="hjelp")
+@discord_client.tree.command(name="help")
 async def help_command(interaction: discord.Interaction):
     await help(interaction)
+
+
+@discord_client.tree.command(name="chat")
+async def chat_command(interaction: discord.Interaction, question: str):
+    await chat(interaction, question)
 
 
 def run_flask_app():
