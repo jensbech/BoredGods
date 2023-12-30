@@ -1,7 +1,7 @@
 {
 	"name": "Python 3",
 	"image": "mcr.microsoft.com/devcontainers/python:1-3.10-bookworm",
-	"postCreateCommand": "pip3 install pylint discord python-dotenv aiohttp flask",
+	"postCreateCommand": "pip3 install pylint discord python-dotenv aiohttp flask llama-index",
 	"customizations": {
 		"vscode": {
 			"extensions": [

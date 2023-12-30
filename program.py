@@ -5,8 +5,9 @@ import os
 from commands.roll import roll
 from commands.search import search
 from commands.weather import weather
-from webhooks.new_post import create_app
 from commands.help import help
+from commands.chat import chat
+from webhooks.new_post import create_app
 import threading
 
 discord_client = BookStackAPIClient(intents=discord.Intents.default())
@@ -36,6 +37,11 @@ async def weather_command(interaction: discord.Interaction):
 @discord_client.tree.command(name="hjelp")
 async def help_command(interaction: discord.Interaction):
     await help(interaction)
+
+
+@discord_client.tree.command(name="chat")
+async def chat_command(interaction: discord.Interaction):
+    await chat(interaction)
 
 
 def run_flask_app():
