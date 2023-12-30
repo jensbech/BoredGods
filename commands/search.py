@@ -2,6 +2,7 @@ import aiohttp
 from urllib.parse import urlencode
 from discord import Embed
 import discord
+import re
 
 
 async def search(interaction: discord.Interaction, baseurl: str, auth_header: dict,
@@ -37,6 +38,12 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
                             '<strong>', '**').replace('</strong>', '**')
                         preview_content = preview_content.replace(
                             '<u>', '__').replace('</u>', '__')
+                        preview_content = re.sub(
+                            '<img[^>]*>', '', preview_content)
+                        preview_content = re.sub(
+                            '\n{2,}', '\n', preview_content)
+                        preview_content = re.sub(
+                            '\s*\n\s*\n\s*', '\n', preview_content)
 
                         embed = Embed(
                             title=result['name'],
