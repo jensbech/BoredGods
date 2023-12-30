@@ -9,11 +9,18 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
     page = max(1, page)
     count = max(1, min(100, count))
 
-    query_params = {
-        'query': query,
-        'page': page,
-        'count': count
-    }
+    if query.startswith('"') and query.endswith('"'):
+        query_params = {
+            'query': query,
+            'page': page,
+            'count': count
+        }
+    else:
+        query_params = {
+            'query': f'"{query}"',
+            'page': page,
+            'count': count
+        }
 
     encoded_query = urlencode(query_params)
     search_url = f"{baseurl}/search?{encoded_query}"
