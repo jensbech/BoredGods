@@ -20,8 +20,8 @@ async def on_ready():
 
 
 @discord_client.tree.command(name="search")
-async def search_command(interaction: discord.Interaction, query: str):
-    await search(interaction, baseurl, discord_client.auth_header, query)
+async def search_command(interaction: discord.Interaction, word_combination: str):
+    await search(interaction, baseurl, discord_client.auth_header, word_combination)
 
 
 @discord_client.tree.command(name="roll")
@@ -40,8 +40,8 @@ async def help_command(interaction: discord.Interaction):
 
 
 @discord_client.tree.command(name="chat")
-async def chat_command(interaction: discord.Interaction, question: str):
-    await chat(interaction, question)
+async def chat_command(interaction: discord.Interaction, question_about_dnd_rules: str):
+    await chat(interaction, question_about_dnd_rules)
 
 
 def run_flask_app():

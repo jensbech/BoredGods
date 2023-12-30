@@ -21,8 +21,8 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
                 data = await response.json()
 
                 n_results = data['total']
-                results_message = f"Showing {min(len(data['data']), count)} of {n_results} results. Consider a more specific search!" if n_results > count else ""
-
+                results_message = f"Showing {min(len(data['data']), count)} of {n_results} wiki results. " \
+                    f"Consider a more specific search!" if n_results > count else ""
                 if n_results > 0:
                     embeds = []
                     for result in data['data'][:count]:
