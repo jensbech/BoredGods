@@ -15,14 +15,15 @@ async def roll(interaction: discord.Interaction, dice: str):
         results = roll_dice(num_rolls, limit)
 
         quip_messages = load_quip_messages()
-        result_lines, embeds = generate_results_and_embeds(
-            results, limit, modifier, quip_messages)
+
+        result_lines = generate_results(
+            results, limit, modifier, quip_messages, interaction.user.name)
 
         result_string = '\n'.join(result_lines)
-        await interaction.response.send_message(content=result_string, embeds=embeds)
+        await interaction.response.send_message(content=result_string)
 
-    except ValueError:
-        await interaction.response.send_message('Invalid format or numbers!')
+    except ValueError as e:
+        await interaction.response.send_message(f'Invalid format or numbers! {e}')
     except Exception as e:
         await interaction.response.send_message(f'An unexpected error occurred: {e}')
 
@@ -64,18 +65,20 @@ def load_quip_messages():
         return json.load(file)
 
 
-def generate_results_and_embeds(results, limit, modifier, quip_messages):
+def generate_results(results, limit, modifier, quip_messages, user_name):
     result_lines = []
-    embeds = []
     for result in results:
         critical_message = get_critical_message(result, limit, quip_messages)
         modified_result = result + modifier
+
         result_line = generate_result_line(
             result, modifier, modified_result, critical_message)
+
         result_lines.append(result_line)
+
         if result == 20 and limit == 20:
-            embeds.append(create_natural_20_embed())
-    return result_lines, embeds
+            result_lines.append(set_critical_song(user_name))
+    return result_lines
 
 
 def get_critical_message(result, limit, quip_messages):
@@ -94,15 +97,11 @@ def generate_result_line(result, modifier, modified_result, critical_message):
         return f"{critical_message}{result} ({sign}{abs(modifier)}) = {modified_result}"
 
 
-def create_natural_20_embed():
-    # Todo: Change with just the link for all players
-    thumb = discord.Embed(
-        title="Nina Sublatti",
-        description="Warrior",
-        url="https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef",
-        color=0x1DB954
-    )
-    thumb.set_thumbnail(
-        url="https://wiki.boredgods.no/uploads/images/gallery/2023-12/thumbs-150-150/spotify-icon-svg.png"
-    )
-    return thumb
+def set_critical_song(user_name):
+    with open("resources/critical_songs.json", "r") as file:
+        song_dict = json.load(file)
+
+    default_song_link = "https://open.spotify.com/track/7yU7FlMnnLHEnOVxMmQLCQ?si=3f3693f8cef847ef"
+    song_link = song_dict.get(user_name, default_song_link)
+
+    return song_link
