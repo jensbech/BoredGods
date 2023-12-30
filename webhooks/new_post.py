@@ -11,13 +11,13 @@ def create_app(discord_client):
     client = discord_client
 
     @app.route('/webhooks/new_post', methods=['POST'])
-    def webhook():
+    async def webhook():
         data = request.json
         print(data)
         print(json.dumps(data, indent=4))
 
         if data['event'] == 'page_create':
-            handle_page_create(data)
+            await handle_page_create(data)
         else:
             print(f"Received unhandled event type: {data['event']}")
 
