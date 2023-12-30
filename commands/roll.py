@@ -72,7 +72,7 @@ def generate_results(results, limit, modifier, quip_messages, user_name):
         modified_result = result + modifier
 
         result_line = generate_result_line(
-            result, modifier, modified_result, critical_message)
+            result, modifier, modified_result, critical_message, results)
 
         result_lines.append(result_line)
 
@@ -83,18 +83,22 @@ def generate_results(results, limit, modifier, quip_messages, user_name):
 
 def get_critical_message(result, limit, quip_messages):
     if result == 20 and limit == 20:
-        return f"**Natural 20!! {random.choice(quip_messages['success'])}\n**"
+        return f"**{random.choice(quip_messages['success'])}** Natural "
     elif result == 1 and limit == 20:
-        return f"**Natural 1. {random.choice(quip_messages['failure'])}\n**"
+        return f"**{random.choice(quip_messages['failure'])}** Natural "
     return ''
 
 
-def generate_result_line(result, modifier, modified_result, critical_message):
+def generate_result_line(result, modifier, modified_result, critical_message, results):
+    def add_dashes_when_more_than_one_result():
+        return "---\n" if len(results) > 1 else ""
+
     sign = "-" if modifier < 0 else "+"
+    dashes = add_dashes_when_more_than_one_result()
     if modifier == 0:
-        return f"{critical_message}{modified_result}"
+        return f"{dashes}{critical_message}{modified_result}."
     else:
-        return f"{critical_message}{result} ({sign}{abs(modifier)}) = {modified_result}"
+        return f"{dashes}{critical_message}{result} ({sign}{abs(modifier)}) = {modified_result}."
 
 
 def get_critical_song(user_name):
