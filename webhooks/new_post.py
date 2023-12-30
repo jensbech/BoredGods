@@ -1,3 +1,4 @@
+import aiohttp
 from flask import Flask, request
 import json
 import asyncio
@@ -22,11 +23,14 @@ def create_app(discord_client):
 
         return 'Webhook received', 200
 
-    def handle_page_create(data):
+    async def handle_page_create(data):
         page_url = data.get('url')
-        triggered_by = data['triggered_by']['name']
+        author = data['triggered_by']['name']
+        page_id = data['id']
 
-        discord_message = f"{triggered_by} publiserte akkurat en ny side i Wikien!\n{page_url}"
+        new_page_published_message = f"{author} publiserte akkurat en ny side i Wikien!\n{page_url}"
+
+        full_page = await get_page_content(page_id)
 
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 
@@ -34,10 +38,27 @@ def create_app(discord_client):
 
         if channel:
             asyncio.run_coroutine_threadsafe(
-                channel.send(discord_message),
+                channel.send(new_page_published_message + "\n" + full_page),
                 client.loop
             )
         else:
             print(f"Could not find the Discord channel with ID: {channel_id}")
 
     return app
+
+
+async def get_page_content(page_id):
+    base_url = os.getenv("BASE_URL")
+    token = os.getenv("BOOKSTACK_API_ID")
+    api_id = os.getenv("BOOKSTACK_API_ID")
+
+    search_url = base_url + f"/pages/{page_id}"
+    auth_header = {
+        'Authorization': f'Token { api_id }:{ token }'}
+    async with aiohttp.ClientSession() as session:
+        async with session.get(search_url, headers=auth_header) as response:
+            if response.status == 200:
+                data = await response.json()
+                return data['markdown']
+            else:
+                return "Could not fetch page content."
