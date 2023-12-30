@@ -17,7 +17,7 @@ def create_app(discord_client):
         print(json.dumps(data, indent=4))
 
         if data['event'] == 'page_create':
-            handle_page_create(data)
+            asyncio.ensure_future(handle_page_create(data))
         else:
             print(f"Received unhandled event type: {data['event']}")
 
