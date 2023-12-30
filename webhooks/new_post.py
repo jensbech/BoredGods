@@ -17,13 +17,13 @@ def create_app(discord_client):
         print(json.dumps(data, indent=4))
 
         if data['event'] == 'page_create':
-            asyncio.ensure_future(handle_page_create(data))
+            handle_page_create(data)
         else:
             print(f"Received unhandled event type: {data['event']}")
 
         return 'Webhook received', 200
 
-    async def handle_page_create(data):
+    def handle_page_create(data):
         page_url = data.get('url')
         author = data['triggered_by']['name']
 
