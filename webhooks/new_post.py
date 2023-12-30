@@ -3,6 +3,7 @@ from flask import Flask, request
 import json
 import asyncio
 import os
+import random
 
 
 def create_app(discord_client):
@@ -28,7 +29,12 @@ def create_app(discord_client):
         author = data['triggered_by']['name']
         page_id = data['id']
 
-        new_page_published_message = f"{author} publiserte akkurat en ny side i Wikien!\n{page_url}"
+        with open("resources/new_post_messages.json", "r") as new_posts:
+            posts = json.load(new_posts)
+
+        message = random.choice(list(posts.values()))
+
+        new_page_published_message = f"{message} It's author is **{author}**!\n{page_url}"
 
         full_page = await get_page_content(page_id)
 
