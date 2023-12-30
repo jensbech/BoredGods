@@ -2,6 +2,7 @@ from flask import Flask, request
 import json
 import asyncio
 import os
+import random
 
 
 def create_app(discord_client):
@@ -24,9 +25,14 @@ def create_app(discord_client):
 
     def handle_page_create(data):
         page_url = data.get('url')
-        triggered_by = data['triggered_by']['name']
+        author = data['triggered_by']['name']
 
-        discord_message = f"{triggered_by} publiserte akkurat en ny side i Wikien!\n{page_url}"
+        with open("resources/new_post_messages.json", "r") as new_posts:
+            posts = json.load(new_posts)
+
+        message = random.choice(list(posts.values()))
+
+        new_page_published_message = f"{message} It's author is **{author}**!\n{page_url}"
 
         channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 
@@ -34,7 +40,7 @@ def create_app(discord_client):
 
         if channel:
             asyncio.run_coroutine_threadsafe(
-                channel.send(discord_message),
+                channel.send(new_page_published_message),
                 client.loop
             )
         else:
