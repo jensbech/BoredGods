@@ -7,21 +7,11 @@ import re
 
 async def search(interaction: discord.Interaction, baseurl: str, auth_header: dict,
                  query: str, page: int = 1, count: int = 10):
-    page = max(1, page)
-    count = max(1, min(100, count))
-
-    if query.startswith('"') and query.endswith('"'):
-        query_params = {
-            'query': query,
-            'page': page,
-            'count': count
-        }
-    else:
-        query_params = {
-            'query': f'"{query}"',
-            'page': page,
-            'count': count
-        }
+    query_params = {
+        'query': query,
+        'page': page,
+        'count': count
+    }
 
     encoded_query = urlencode(query_params)
     search_url = f"{baseurl}/search?{encoded_query}"
@@ -30,9 +20,12 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
             if response.status == 200:
                 data = await response.json()
 
-                if data['total'] > 0:
+                n_results = data['total']
+                results_message = f"Showing {min(len(data['data']), count)} of {n_results} results. Consider a more specific search!" if n_results > count else ""
+
+                if n_results > 0:
                     embeds = []
-                    for result in data['data']:
+                    for result in data['data'][:count]:
                         preview_content = result['preview_html']['content']
                         preview_content = preview_content.replace(
                             '<strong>', '**').replace('</strong>', '**')
@@ -54,6 +47,9 @@ async def search(interaction: discord.Interaction, baseurl: str, auth_header: di
                             embed.add_field(
                                 name="", value=preview_content, inline=False)
                         embeds.append(embed)
-                    await interaction.response.send_message(embeds=embeds[:10])
+
+                    await interaction.response.send_message(embeds=embeds, content=results_message)
                 else:
                     await interaction.response.send_message("No results found.")
+            else:
+                await interaction.response.send_message("Failed to fetch results.")

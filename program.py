@@ -20,8 +20,8 @@ async def on_ready():
 
 
 @discord_client.tree.command(name="search")
-async def search_command(interaction: discord.Interaction, query: str, page: int = 1, count: int = 10):
-    await search(interaction, baseurl, discord_client.auth_header, query, page, count)
+async def search_command(interaction: discord.Interaction, query: str):
+    await search(interaction, baseurl, discord_client.auth_header, query)
 
 
 @discord_client.tree.command(name="roll")
